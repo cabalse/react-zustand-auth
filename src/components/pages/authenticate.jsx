@@ -1,19 +1,23 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router";
+import { useRefreshToken, useToken } from "../../store/useApplicationStore";
 
 const Authenticate = () => {
   const location = useLocation();
+  const token = useToken();
 
   useEffect(() => {
-    const url = new URL(import.meta.env.VITE_SSO_URL);
+    if (!token) {
+      const url = new URL(import.meta.env.VITE_SSO_URL);
 
-    url.searchParams.append(
-      "returnBase64",
-      btoa(
-        import.meta.env.VITE_APP_BASE_URL + import.meta.env.VITE_LANDING_PAGE
-      )
-    );
-    window.location.href = url.href;
+      url.searchParams.append(
+        "returnBase64",
+        btoa(
+          import.meta.env.VITE_APP_BASE_URL + import.meta.env.VITE_LANDING_PAGE
+        )
+      );
+      window.location.href = url.href;
+    }
   }, [location]);
 
   return (
